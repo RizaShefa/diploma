@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Predict-Home</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+        <!-- Google Fonts (CDN is OK) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet"> 
+
+<!-- Icon Fonts (CDN is OK) -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Libraries (local) -->
+<link href="{{ url_for('static', filename='lib/animate/animate.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+
+<!-- Bootstrap (local) -->
+<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+<!-- Template Styles (local) -->
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+
+
+
+    <body>
+
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+        <!-- Navbar & Hero Start -->
+        <div class="container-fluid position-relative p-0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white px-4 px-lg-5 py-3 py-lg-0">
+                <a href="/home" class="navbar-brand p-0">
+                    <h1 class="text-primary m-0"><i class="fas fa-star-of-life me-3"></i>Predict</h1>
+                    <!-- <img src="img/logo.png" alt="Logo"> -->
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto py-0">
+                        <a href="/home" class="nav-item nav-link active">Home</a>
+                        <a href="/about" class="nav-item nav-link">About</a>
+                        <a href="/service" class="nav-item nav-link">Services</a>
+                        <a href="/faq" class="nav-item nav-link">FAQ</a>
+                        <a href="/contact" class="nav-item nav-link">Contact Us</a>
+                    </div>
+                    <a href="/appointment" class="btn btn-primary rounded-pill text-white py-2 px-4 flex-wrap flex-sm-shrink-0">Book Appointment</a>
+                </div>
+            </nav>
+
+
+            <!-- Carousel Start -->
+            <div class="header-carousel owl-carousel">
+                <div class="header-carousel-item">
+                    <img src="{{ url_for('static', filename='img/Image2.jpg') }}" alt="Image2" class="img-fluid">
+
+                    <div class="carousel-caption">
+                        <div class="carousel-caption-content p-3">
+                            <h1 class="display-5 text-capitalize text-white mb-4">Early detection is your best defense</h1>
+                            <p class="mb-5 fs-5">“Breast cancer can affect anyone at any age, but early detection through regular screening can dramatically improve treatment success and save lives — don’t wait, take action today.”
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-carousel-item">
+                    <img src="{{ url_for('static', filename='img/Image3.jpg') }}" alt="Image2" class="img-fluid">
+
+                    <div class="carousel-caption">
+                        <div class="carousel-caption-content p-3">
+                            <h1 class="display-5 text-capitalize text-white mb-4">Detect breast cancer, protect health</h1>
+                            <p class="mb-5 fs-5 animated slideInDown"> “Your health matters more than ever; by detecting breast cancer early with advanced technology, you can empower yourself with timely care and a greater chance for a full recovery.” 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Carousel End -->
+        </div>
+        <!-- Navbar & Hero End -->
+
+
+        <!-- About Start -->
+        <div class="container-fluid about bg-light py-5">
+            <div class="container py-5">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-5 wow fadeInLeft" data-wow-delay="0.2s">
+                        <div class="about-img pb-5 ps-5">
+<img src="{{ url_for('static', filename='img/Image1.jpg') }}" alt="Image2" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-7 wow fadeInRight" data-wow-delay="0.4s">
+                        <div class="section-title text-start mb-5">
+                            <h4 class="sub-title pe-3 mb-0">About Us</h4>
+                            <h1 class="display-6 mb-4">Driven by Care, Powered by AI</h1>
+                            <p class="mb-4"> We are a team of healthcare innovators and technology experts dedicated to improving early breast cancer detection through the power of artificial intelligence. Our mission is to make diagnostic tools more accessible, reliable, and efficient — especially for those who need them most.
+By combining advanced machine learning with medical imaging, our platform empowers users to upload ultrasound scans and receive rapid, AI-driven predictions. We believe that early detection saves lives, and we're committed to supporting both patients and healthcare professionals with trustworthy, easy-to-use technology.</p>
+                            <a href="/about" class="btn btn-primary rounded-pill text-white py-3 px-5">Discover More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- About End -->
+
+         <!-- get to know us Start -->
+<div class="container-fluid service py-5">
+    <div class="container py-5">
+        <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.2s">
+            <div class="sub-style">
+                <h4 class="sub-title px-3 mb-0">Get to know us</h4>
+            </div>
+            <h4 class="display-7 mb-1">AI-Powered Breast Cancer Detection</h4>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Card 1 -->
+            <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.7s">
+                <div class="service-item rounded">
+                    <div class="service-img rounded-top">
+<img src="{{ url_for('static', filename='img/Image18.jpg') }}" alt="Image2" class="img-fluid">
+                    </div>
+                    <div class="service-content rounded-bottom bg-light p-4">
+                        <div class="service-content-inner">
+                            <h5 class="mb-4">Predict with AI</h5>
+                            <p class="mb-0">  Our AI-powered system analyzes ultrasound images to detect early signs of breast cancer, offering fast, accurate predictions and general guidance to support informed, timely health decisions and encourage proactive, potentially life-saving medical care.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.7s">
+                <div class="service-item rounded">
+                    <div class="service-img rounded-top">
+<img src="{{ url_for('static', filename='img/Image10.jpg') }}" alt="Image2" class="img-fluid">
+                    </div>
+                    <div class="service-content rounded-bottom bg-light p-4">
+                        <div class="service-content-inner">
+                            <h5 class="mb-4">General Treatment Guidance</h5>
+                            <p class="mb-0">Our AI provides general guidance on possible treatment paths—such as follow-up imaging, biopsy, or consulting a specialist—helping users understand the next steps and encouraging timely medical care.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Single Button at the Bottom -->
+        <div class="text-center mt-5">
+            <a href="/service" class="btn btn-primary rounded-pill text-white py-2 px-4">Try out our service</a>
+            <p class="mt-3 text-muted" style="font-size: 0.9rem;">
+                *This tool is for informational purposes only and does not replace professional medical diagnosis or treatment. Please consult a healthcare provider for any medical decisions.*
+            </p>
+        </div>
+    </div>
+</div>
+<!-- get to know us  End -->
+
+
+        
+
+        <!-- Feature Start -->
+        <div class="container-fluid feature py-5">
+            <div class="container py-5">
+                <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="sub-style">
+                        <h4 class="sub-title px-3 mb-0">Why Choose Us</h4>
+                    </div>
+                    <h1 class="display-6 mb-4">Cutting-Edge AI, Life-Saving Results</h1>
+                    <p class="mb-0">We combine advanced AI technology, expert knowledge, and a deep commitment to your privacy and health — delivering fast, accurate, and accessible breast cancer detection you can trust.</p>
+                </div>
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="row-cols-1 feature-item p-4">
+                            <div class="col-12">
+                                <div class="feature-icon mb-4">
+                                    <div class="p-3 d-inline-flex bg-white rounded">
+                                        <i class="fas fa-brain fa-4x text-primary"></i>
+
+                                    </div>
+                                </div>
+                                <div class="feature-content d-flex flex-column">
+                                    <h5 class="mb-4">AI Accuracy </h5>
+                                    <p class="mb-0">Our advanced algorithms detect early signs of breast cancer with high precision.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="row-cols-1 feature-item p-4">
+                            <div class="col-12">
+                                <div class="fa-brain mb-4">
+                                    <div class="p-3 d-inline-flex bg-white rounded">
+                                        <i class="fas fa-bolt fa-4x text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="feature-content d-flex flex-column">
+                                    <h5 class="mb-4">Instant Results</h5>
+                                    <p class="mb-0"> Get fast predictions in seconds after uploading your ultrasound image.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="row-cols-1 feature-item p-4">
+                            <div class="col-12">
+                                <div class="feature-icon mb-4">
+                                    <div class="p-3 d-inline-flex bg-white rounded">
+                                         <i class="fas fa-handshake fa-4x text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="feature-content d-flex flex-column">
+                                    <h5 class="mb-4">User-Friendly</h5>
+                                    <p class="mb-0">Simple interface designed for all users, no technical skills needed.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.7s">
+                        <div class="row-cols-1 feature-item p-4">
+                            <div class="col-12">
+                                <div class="feature-icon mb-4">
+                                    <div class="p-3 d-inline-flex bg-white rounded">
+                                        <i class="fas fa-lock fa-4x text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="feature-content d-flex flex-column">
+                                    <h5 class="mb-4">Privacy Guaranteed </h5>
+                                    <p class="mb-0">Your medical data stays secure and confidential at all times.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="row-cols-1 feature-item p-4">
+                            <div class="col-12">
+                                <div class="feature-icon mb-4">
+                                    <div class="p-3 d-inline-flex bg-white rounded">
+                                        <i class="fas fa-user-md fa-4x text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="feature-content d-flex flex-column">
+                                    <h5 class="mb-4">Backed by Experts</h5>
+                                    <p class="mb-0">Developed with input from medical and AI professionals.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="row-cols-1 feature-item p-4">
+                            <div class="col-12">
+                                <div class="feature-icon mb-4">
+                                    <div class="p-3 d-inline-flex bg-white rounded">
+                                        <i class="fas fa-globe fa-4x text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="feature-content d-flex flex-column">
+                                    <h5 class="mb-4">Accessible Anywhere</h5>
+                                    <p class="mb-0">Use the platform anytime, from any device with internet access.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="row-cols-1 feature-item p-4">
+                            <div class="col-12">
+                                <div class="feature-icon mb-4">
+                                    <div class="p-3 d-inline-flex bg-white rounded">
+                                        <i class="fas fa-dollar-sign fa-4x text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="feature-content d-flex flex-column">
+                                    <h5 class="mb-4">No Cost Barrier</h5>
+                                    <p class="mb-0">Affordable or free access to life-saving early detection tools.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.7s">
+                        <div class="row-cols-1 feature-item p-4">
+                            <div class="col-12">
+                                <div class="feature-icon mb-4">
+                                    <div class="p-3 d-inline-flex bg-white rounded">
+                                         <i class="fas fa-lightbulb fa-4x text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="feature-content d-flex flex-column">
+                                    <h5 class="mb-4">Empowering Health Decisions </h5>
+                                    <p class="mb-0">Helps you act early and make informed health choices.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                  <div class="text-center mt-5">
+            <a href="/faq" class="btn btn-primary rounded-pill text-white py-2 px-4">Learn more</a>
+        </div>
+            </div>
+        </div>
+        <!-- Feature End -->
+
+
+        
+
+        <!-- Testimonial Start -->
+        <div class="container-fluid testimonial py-5 wow zoomInDown" data-wow-delay="0.1s">
+            <div class="container py-5">
+                <div class="section-title mb-5">
+                    <div class="sub-style">
+                        <h4 class="sub-title text-white px-3 mb-0">Testimonial</h4>
+                    </div>
+                    <h1 class="display-3 mb-4">What Clients Say</h1>
+                </div>
+                <div class="testimonial-carousel owl-carousel">
+                    <div class="testimonial-item">
+                        <div class="testimonial-inner p-5">
+                            <div class="testimonial-inner-img mb-4">
+<img src="{{ url_for('static', filename='img/Image7.jpg') }}" alt="Image2" class="img-fluid">
+                            </div>
+                            <p class="text-white fs-7">"As someone with a family history of breast cancer, I wanted a reliable tool to stay informed. This platform gave me peace of mind with its quick and accurate results."
+                            </p>
+                            <div class="text-center">
+                                <h5 class="mb-2">Sophia Martinez </h5>
+                                <p class="mb-2 text-white-50">Austin, Texas, USA</p>
+                                <div class="d-flex justify-content-center">
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item">
+                        <div class="testimonial-inner p-5">
+                            <div class="testimonial-inner-img mb-4">
+<img src="{{ url_for('static', filename='img/Image8.jpg') }}" alt="Image2" class="img-fluid">
+                            </div>
+                            <p class="text-white fs-7">"I was amazed at how easy it was to use. I simply uploaded my ultrasound, and the AI provided clear guidance instantly — no stress, no confusion."
+                            </p>
+                            <div class="text-center">
+                                <h5 class="mb-2">James Roberts</h5>
+                                <p class="mb-2 text-white-50">Toronto, Canada</p>
+                                <div class="d-flex justify-content-center">
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item">
+                        <div class="testimonial-inner p-5">
+                            <div class="testimonial-inner-img mb-4">
+<img src="{{ url_for('static', filename='img/Image9.jpg') }}" alt="Image2" class="img-fluid">
+                            </div>
+                            <p class="text-white fs-7">   "I truly appreciate the privacy and the professional feel of this tool. It made something scary feel manageable and gave me the confidence to take action early."
+                            </p>
+                            <div class="text-center">
+                                <h5 class="mb-2">Lina Andersson </h5>
+                                <p class="mb-2 text-white-50">Stockholm, Sweden</p>
+                                <div class="d-flex justify-content-center">
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                    <i class="fas fa-star text-secondary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Testimonial End -->
+
+         <!-- Footer Start -->
+        <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
+            <div class="container py-5">
+                <div class="row g-5">
+                    <div class="col-md-6 col-lg-6 col-xl-3">
+                        <div class="footer-item d-flex flex-column">
+                            <h4 class="text-white mb-4"><i class="fas fa-star-of-life me-3"></i>Predict</h4>
+                            <p> Our app uses AI to quickly analyze ultrasound images and detect early signs of breast cancer with accuracy and ease.
+                            </p>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-share fa-2x text-white me-2"></i>
+                                <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href=""><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href=""><i class="fab fa-twitter"></i></a>
+                                <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href=""><i class="fab fa-instagram"></i></a>
+                                <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-3">
+                        <div class="footer-item d-flex flex-column">
+                            <h4 class="mb-4 text-white">Contact Info</h4>
+                            <a href=""><i class="fa fa-map-marker-alt me-2"></i> 123 Street, Tirane, Albania</a>
+                            <a href=""><i class="fas fa-envelope me-2"></i> info@example.com</a>
+                            <a href=""><i class="fas fa-phone me-2"></i> +355 345 67890</a>
+                            <a href="" class="mb-3"><i class="fas fa-print me-2"></i> +355 345 67890</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+        
+        <!-- Copyright Start -->
+        <div class="container-fluid copyright py-4">
+            <div class="container">
+                <div class="row g-4 align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-md-0">
+                        <span class="text-white"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Predict</a>, All right reserved.</span>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end text-white">
+                        <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
+                        <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
+                        <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
+                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Predict</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright End -->
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>   
+
+        
+        <!-- JavaScript Libraries (CDN OK) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JavaScript Libraries (local) -->
+<script src="{{ url_for('static', filename='lib/wow/wow.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+
+<!-- Template JS (local) -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+        
+    </body>
+
+</html>

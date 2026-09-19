@@ -1,0 +1,19 @@
+# Pinned for Python 3.10 on Windows.
+# TensorFlow 2.15 bundles Keras 2.x -- required to load the legacy
+# BreastCancer10Epochs.h5 model. TF >= 2.16 ships Keras 3, which
+# breaks `from keras.models import load_model` on this .h5 file.
+tensorflow==2.15.1
+
+# Web app
+flask==3.0.3
+werkzeug==3.0.3
+
+# Image handling / inference
+opencv-python==4.10.0.84
+pillow==10.4.0
+numpy==1.26.4
+
+# Training + evaluation only (MainTrain.py)
+scikit-learn==1.5.1
+matplotlib==3.9.2
+seaborn==0.13.2
