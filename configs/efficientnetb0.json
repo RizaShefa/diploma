@@ -1,0 +1,5 @@
+{
+  "_comment": "ImageNet-pretrained EfficientNet-B0. Answers: does compound scaling beat residual depth at this dataset size (~647 images)?",
+  "model": {"name": "efficientnetb0", "architecture": "efficientnetb0", "dropout": 0.5, "freeze_backbone": false, "fine_tune_from": 150},
+  "preprocessing": {"profile": "efficientnet_224"}
+}

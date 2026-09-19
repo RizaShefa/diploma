@@ -1,0 +1,246 @@
+{% extends "_research_base.html" %}
+{% block title %}Evaluation results{% endblock %}
+{% block nav_research %}active{% endblock %}
+
+{% macro not_run(block) %}
+<div class="not-run">
+    <p class="mb-2"><i class="fas fa-flask me-2 text-muted"></i><strong>{{ block.message }}</strong></p>
+    <p class="mb-0 small text-muted">Run <code>{{ block.how_to_run }}</code> to generate it.</p>
+</div>
+{% endmacro %}
+
+{% macro metric_tile(label, value, ci) %}
+<div class="col-6 col-md-4 col-lg-3 mb-3">
+    <div class="metric-card">
+        <div class="label">{{ label }}</div>
+        <div class="value">{% if value is not none %}{{ '%.3f'|format(value) }}{% else %}&mdash;{% endif %}</div>
+        {% if ci and ci.lower is not none %}
+        <div class="ci">95% CI {{ '%.3f'|format(ci.lower) }}&ndash;{{ '%.3f'|format(ci.upper) }}</div>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}
+
+{% block content %}
+<h2 class="mb-1">Evaluation results</h2>
+<p class="text-muted mb-4">
+    Test-set performance, model comparison and error analysis.
+    {% if index.generated_utc %}<span class="mono">Last updated {{ index.generated_utc }}</span>{% endif %}
+</p>
+
+{% if not index.any_results %}
+<div class="not-run mb-4">
+    <h5 class="mb-3"><i class="fas fa-flask me-2 text-muted"></i>No experiments have been executed yet.</h5>
+    <p class="small mb-2">No model has been trained and evaluated, so there are no results to display.
+       Nothing is shown here that was not produced by a real run.</p>
+    <p class="small mb-2"><strong>To produce results, run in order:</strong></p>
+    <ol class="small mb-0">
+        {% for step in index.next_steps %}<li class="mono">{{ step }}</li>{% endfor %}
+    </ol>
+</div>
+{% else %}
+
+<!-- ---------------------------------------------------------- Comparison -->
+<h4 class="mt-4 mb-3">Model comparison</h4>
+{% if index.comparison.available %}
+    {% if index.comparison.fairness_check and index.comparison.fairness_check.checked
+          and not index.comparison.fairness_check.comparable %}
+    <div class="alert alert-warning small">
+        <strong>Comparison is not controlled.</strong>
+        {{ index.comparison.fairness_check.note }}
+    </div>
+    {% elif index.comparison.fairness_check and index.comparison.fairness_check.checked %}
+    <p class="small text-success mb-3"><i class="fas fa-check-circle me-1"></i>
+        {{ index.comparison.fairness_check.note }}</p>
+    {% endif %}
+
+    <div class="table-responsive">
+        <table class="table table-sm table-striped research-table align-middle">
+            <thead>
+                <tr>
+                    <th>Model</th><th class="text-end">Params</th><th class="text-end">ms/img</th>
+                    {% for m in index.comparison.metrics %}<th class="text-center">{{ m.replace('_',' ')|title }}</th>{% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for row in index.comparison.models %}
+                <tr>
+                    <td><strong>{{ row.model_name }}</strong><br>
+                        <span class="small text-muted">{{ row.architecture }}</span></td>
+                    <td class="text-end mono">{{ '{:,}'.format(row.n_parameters or 0) }}</td>
+                    <td class="text-end mono">{{ '%.2f'|format(row.per_image_ms or 0) }}</td>
+                    {% for m in index.comparison.metrics %}
+                    <td class="text-center mono">{{ row.formatted[m] }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p class="small text-muted">{{ index.comparison.interpretation_note }}</p>
+
+    {% if index.comparison.figures %}
+    <div class="row mt-3">
+        {% for metric, filename in index.comparison.figures.items() %}
+        <div class="col-md-4 mb-3 figure-card">
+            <img src="{{ url_for('results_figure', filename=filename) }}" alt="Comparison by {{ metric }}">
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% else %}
+    {{ not_run(index.comparison) }}
+{% endif %}
+
+<!-- ---------------------------------------------------------- Per model -->
+<h4 class="mt-5 mb-3">Per-model test results</h4>
+<ul class="nav nav-tabs" role="tablist">
+    {% for name in index.evaluated_models %}
+    <li class="nav-item">
+        <button class="nav-link {% if loop.first %}active{% endif %}" data-bs-toggle="tab"
+                data-bs-target="#tab-{{ loop.index }}" type="button">{{ name }}</button>
+    </li>
+    {% endfor %}
+</ul>
+<div class="tab-content pt-4">
+{% for name in index.evaluated_models %}
+    {% set ev = index.evaluations[name] %}
+    {% set err = index.error_analysis[name] %}
+    <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="tab-{{ loop.index }}">
+    {% if ev.available %}
+        <p class="small text-muted">
+            Split: <strong>{{ ev.split }}</strong> &middot; n = {{ ev.n_samples }}
+            ({{ ev.class_balance.positive }} {{ ev.positive_class }},
+             {{ ev.class_balance.negative }} other) &middot;
+            evaluated {{ ev.evaluated_utc }}
+        </p>
+
+        <div class="row">
+            {{ metric_tile('Sensitivity', ev.metrics.sensitivity, ev.confidence_intervals.sensitivity) }}
+            {{ metric_tile('Specificity', ev.metrics.specificity, ev.confidence_intervals.specificity) }}
+            {{ metric_tile('Precision (PPV)', ev.metrics.precision, ev.confidence_intervals.precision) }}
+            {{ metric_tile('NPV', ev.metrics.npv, ev.confidence_intervals.npv) }}
+            {{ metric_tile('F1', ev.metrics.f1, ev.confidence_intervals.f1) }}
+            {{ metric_tile('Balanced acc.', ev.metrics.balanced_accuracy, ev.confidence_intervals.balanced_accuracy) }}
+            {{ metric_tile('ROC-AUC', ev.metrics.roc_auc, ev.confidence_intervals.roc_auc) }}
+            {{ metric_tile('PR-AUC', ev.metrics.pr_auc, ev.confidence_intervals.pr_auc) }}
+        </div>
+
+        <p class="small text-muted">
+            Confusion counts: TP {{ ev.metrics.tp }} &middot; TN {{ ev.metrics.tn }} &middot;
+            FP {{ ev.metrics.fp }} &middot; FN {{ ev.metrics.fn }} &middot;
+            ECE {{ '%.4f'|format(ev.calibration.ece) }} &middot;
+            {{ '%.2f'|format(ev.inference.per_image_ms) }} ms/image
+        </p>
+
+        {% if ev.operating_point %}
+        <div class="alert {% if ev.operating_point.target_met %}alert-info{% else %}alert-warning{% endif %} small">
+            <strong>Operating point.</strong>
+            Threshold {{ '%.3f'|format(ev.operating_point.threshold) }} selected for a target
+            sensitivity of {{ '%.2f'|format(ev.operating_point.target_sensitivity) }}
+            {% if ev.operating_point.target_met %}
+                &mdash; achieved sensitivity {{ '%.3f'|format(ev.operating_point.sensitivity) }},
+                specificity {{ '%.3f'|format(ev.operating_point.specificity) }}.
+                A missed malignancy is costlier than an unnecessary follow-up, so the threshold
+                is tuned for sensitivity rather than left at 0.5.
+            {% else %}
+                &mdash; <strong>target not reachable.</strong> Best available sensitivity is
+                {{ '%.3f'|format(ev.operating_point.sensitivity) }}.
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if ev.figures %}
+        <div class="row mt-3">
+            {% for key, filename in ev.figures.items() %}
+            <div class="col-md-6 col-lg-4 mb-3 figure-card">
+                <img src="{{ url_for('results_figure', filename=filename) }}" alt="{{ key }}">
+                <p class="small text-muted mt-1 mb-0">{{ key.replace('_',' ')|title }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Error analysis -->
+        <h5 class="mt-4">Error analysis</h5>
+        {% if err.available %}
+            <p class="small mb-2">
+                TP {{ err.counts.true_positive }} &middot;
+                TN {{ err.counts.true_negative }} &middot;
+                <span class="text-danger">FP {{ err.counts.false_positive }}</span> &middot;
+                <span class="text-danger">FN {{ err.counts.false_negative }}</span>
+            </p>
+
+            {% if err.confidence_separation.available %}
+            <p class="small">
+                Mean confidence on correct predictions
+                <strong>{{ '%.3f'|format(err.confidence_separation.correct_mean_confidence) }}</strong>
+                vs incorrect
+                <strong>{{ '%.3f'|format(err.confidence_separation.incorrect_mean_confidence) }}</strong>
+                (gap {{ '%+.3f'|format(err.confidence_separation.gap) }}).
+                {% if err.confidence_separation.gap < 0.05 %}
+                    A small gap means confidence cannot reliably separate correct from incorrect
+                    predictions, so it should not be used for triage.
+                {% endif %}
+            </p>
+            {% endif %}
+
+            {% if err.property_comparison.available %}
+            <div class="table-responsive">
+                <table class="table table-sm research-table">
+                    <thead><tr>
+                        <th>Image property</th><th class="text-end">Correct (mean)</th>
+                        <th class="text-end">Incorrect (mean)</th>
+                        <th class="text-end">Cohen&rsquo;s d</th><th>Effect</th>
+                    </tr></thead>
+                    <tbody>
+                    {% for prop, stats in err.property_comparison.properties.items() %}
+                    <tr>
+                        <td>{{ prop.replace('_',' ') }}</td>
+                        <td class="text-end mono">{{ '%.2f'|format(stats.correct_mean) }}</td>
+                        <td class="text-end mono">{{ '%.2f'|format(stats.incorrect_mean) }}</td>
+                        <td class="text-end mono">{{ '%+.2f'|format(stats.cohens_d) }}</td>
+                        <td><span class="badge bg-{{ 'danger' if stats.interpretation in ['medium','large'] else 'secondary' }}">{{ stats.interpretation }}</span></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <p class="small text-muted">
+                Comparison of simple image descriptors between correctly and incorrectly
+                classified test images. A medium or large effect indicates errors concentrate
+                on a measurable class of images. No p-values are reported: with this sample
+                size and several properties examined, effect sizes are the honest summary.
+            </p>
+            {% else %}
+            <p class="small text-muted">{{ err.property_comparison.reason }}</p>
+            {% endif %}
+
+            {% if err.hardest_cases and err.hardest_cases.false_negatives %}
+            <h6 class="mt-3">False negatives (missed malignant cases)</h6>
+            <div class="table-responsive">
+                <table class="table table-sm research-table">
+                    <thead><tr><th>Image</th><th class="text-end">P(malignant)</th><th class="text-end">Confidence</th></tr></thead>
+                    <tbody>
+                    {% for row in err.hardest_cases.false_negatives %}
+                    <tr>
+                        <td class="mono">{{ row.filename }}</td>
+                        <td class="text-end mono">{{ '%.3f'|format(row.probability_positive) }}</td>
+                        <td class="text-end mono">{{ '%.3f'|format(row.confidence) }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        {% else %}
+            {{ not_run(err) }}
+        {% endif %}
+    {% else %}
+        {{ not_run(ev) }}
+    {% endif %}
+    </div>
+{% endfor %}
+</div>
+{% endif %}
+{% endblock %}

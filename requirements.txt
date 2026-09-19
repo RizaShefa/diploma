@@ -13,7 +13,10 @@ opencv-python==4.10.0.84
 pillow==10.4.0
 numpy==1.26.4
 
-# Training + evaluation only (MainTrain.py)
+# Training, evaluation, dataset analysis
 scikit-learn==1.5.1
 matplotlib==3.9.2
 seaborn==0.13.2
+
+# Tests
+pytest==8.3.3

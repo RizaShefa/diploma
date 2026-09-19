@@ -1,0 +1,5 @@
+{
+  "_comment": "The thesis's original architecture, retrained under the corrected protocol. Baseline for the comparison.",
+  "model": {"name": "custom_cnn", "architecture": "custom_cnn", "dropout": 0.5},
+  "preprocessing": {"profile": "standard_224"}
+}

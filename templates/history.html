@@ -1,0 +1,100 @@
+{% extends "_research_base.html" %}
+{% block title %}Prediction history{% endblock %}
+{% block nav_history %}active{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
+    <div>
+        <h2 class="mb-1">Prediction history</h2>
+        <p class="text-muted mb-0">A local log of predictions made through this prototype.</p>
+    </div>
+    {% if summary.total %}
+    <button id="clear-history" class="btn btn-outline-danger btn-sm mt-2">
+        <i class="fas fa-trash me-1"></i>Clear history
+    </button>
+    {% endif %}
+</div>
+
+<div class="alert alert-secondary small">
+    <strong>Privacy.</strong> This log stores prediction metadata only. Uploaded images are
+    <strong>not</strong> retained unless image storage is explicitly enabled
+    (<span class="mono">BCD_STORE_IMAGES=1</span>), in which case only a small thumbnail is kept.
+    There is no authentication, so this is a single shared local log suitable for a research
+    prototype &mdash; not a clinical record system.
+</div>
+
+{% if not summary.total %}
+<div class="not-run">
+    <p class="mb-0"><i class="fas fa-clock-rotate-left me-2 text-muted"></i>
+        No predictions recorded yet. Upload an image on the
+        <a href="/service">Predict</a> page.</p>
+</div>
+{% else %}
+
+<div class="row mb-4">
+    <div class="col-6 col-md-3 mb-3"><div class="metric-card">
+        <div class="label">Total predictions</div><div class="value">{{ summary.total }}</div></div></div>
+    {% for label, count in summary.by_predicted_label.items() %}
+    <div class="col-6 col-md-3 mb-3"><div class="metric-card">
+        <div class="label">Predicted {{ label }}</div><div class="value">{{ count }}</div></div></div>
+    {% endfor %}
+    {% if summary.mean_inference_ms %}
+    <div class="col-6 col-md-3 mb-3"><div class="metric-card">
+        <div class="label">Mean inference</div>
+        <div class="value">{{ '%.0f'|format(summary.mean_inference_ms) }}<span class="fs-6"> ms</span></div></div></div>
+    {% endif %}
+</div>
+
+<div class="alert alert-info small"><i class="fas fa-info-circle me-1"></i>{{ summary.note }}</div>
+
+<div class="table-responsive">
+    <table class="table table-sm table-striped research-table align-middle">
+        <thead><tr>
+            <th>#</th><th>Recorded (UTC)</th><th>Model</th><th>Prediction</th>
+            <th class="text-end">P(malignant)</th><th>Confidence</th>
+            <th class="text-end">Threshold</th><th>Image</th><th>Grad-CAM</th><th>Report</th>
+        </tr></thead>
+        <tbody>
+        {% for row in rows %}
+        <tr>
+            <td class="mono">{{ row.id }}</td>
+            <td class="mono small">{{ row.created_utc }}</td>
+            <td>
+                {{ row.model_name }}
+                {% if row.model_legacy %}<span class="badge bg-warning text-dark">legacy</span>{% endif %}
+            </td>
+            <td>
+                <span class="badge bg-{{ 'danger' if row.predicted_label == 'malignant' else 'success' }}">
+                    {{ row.predicted_label }}</span>
+            </td>
+            <td class="text-end mono">{{ '%.3f'|format(row.probability_positive) }}</td>
+            <td>
+                <span class="badge bg-{{ {'high':'success','moderate':'secondary','low':'warning text-dark'}[row.confidence_band] }}">
+                    {{ row.confidence_band }}</span>
+                <span class="mono small">{{ '%.2f'|format(row.confidence) }}</span>
+            </td>
+            <td class="text-end mono">{{ '%.2f'|format(row.threshold) }}</td>
+            <td class="small">{{ row.original_filename or '&mdash;'|safe }}
+                <span class="text-muted">{{ row.image_width }}&times;{{ row.image_height }}</span></td>
+            <td>{% if row.had_explanation %}<i class="fas fa-check text-success"></i>
+                {% else %}<i class="fas fa-minus text-muted"></i>{% endif %}</td>
+            <td><a class="small" href="/api/report/{{ row.id }}.txt" target="_blank">text</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('clear-history')?.addEventListener('click', function () {
+    if (!confirm('Delete all recorded predictions? This cannot be undone.')) return;
+    fetch('/api/history/clear', { method: 'POST' })
+        .then(function (r) { return r.json(); })
+        .then(function () { window.location.reload(); })
+        .catch(function () { alert('Could not clear history.'); });
+});
+</script>
+{% endblock %}

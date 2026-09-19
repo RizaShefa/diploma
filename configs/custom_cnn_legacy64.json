@@ -1,0 +1,11 @@
+{
+  "_comment": "Faithful reproduction of the thesis's ORIGINAL model: 64x64 input, Flatten head, no BatchNorm. Used for the resolution ablation (64 vs 224) and as the 'before' arm of the leakage experiment. Not part of the main architecture comparison.",
+  "model": {
+    "name": "custom_cnn_legacy64",
+    "architecture": "custom_cnn",
+    "dropout": 0.5,
+    "head": "flatten",
+    "batch_norm": false
+  },
+  "preprocessing": {"profile": "legacy_64"}
+}

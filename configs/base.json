@@ -1,0 +1,46 @@
+{
+  "_comment": "Shared settings inherited by every experiment. Model configs override only what differs, which is what makes the architecture comparison fair.",
+  "seed": 42,
+  "data": {
+    "root": "data/busi",
+    "classes": ["benign", "malignant"],
+    "include_normal": false,
+    "_comment_classes": "BUSI ships benign/malignant/normal. The thesis research question is binary, so 'normal' is excluded by default. Set include_normal=true and add 'normal' to classes for the 3-class variant.",
+    "split": {"train": 0.70, "val": 0.15, "test": 0.15},
+    "group_aware": true,
+    "_comment_group": "Images are grouped by source lesion id so no lesion can appear in more than one split. This is the fix for the leakage measured in the previous dataset (77.3% of test images had a near-duplicate in train).",
+    "near_duplicate_threshold": 0.95
+  },
+  "preprocessing": {"profile": "standard_224"},
+  "augmentation": {
+    "_comment": "TRAINING SPLIT ONLY. Applied on-the-fly after splitting, never to val/test.",
+    "enabled": true,
+    "horizontal_flip": true,
+    "vertical_flip": false,
+    "rotation_range": 15,
+    "zoom_range": 0.1,
+    "width_shift_range": 0.1,
+    "height_shift_range": 0.1,
+    "brightness_range": [0.9, 1.1],
+    "_comment_vflip": "Vertical flip is disabled: breast ultrasound has a fixed acquisition orientation (skin line at top, depth increasing downward), so a vertical flip produces anatomically impossible images."
+  },
+  "training": {
+    "epochs": 50,
+    "batch_size": 32,
+    "learning_rate": 0.0001,
+    "optimizer": "adam",
+    "loss": "categorical_crossentropy",
+    "class_weight": "balanced",
+    "_comment_cw": "BUSI is imbalanced (437 benign vs 210 malignant). Balanced class weights penalise missing the malignant class more heavily.",
+    "early_stopping": {"enabled": true, "monitor": "val_loss", "patience": 10, "restore_best_weights": true},
+    "reduce_lr": {"enabled": true, "monitor": "val_loss", "factor": 0.5, "patience": 5, "min_lr": 1e-7}
+  },
+  "evaluation": {
+    "bootstrap_iterations": 2000,
+    "confidence_level": 0.95,
+    "positive_class": "malignant",
+    "target_sensitivity": 0.95,
+    "_comment_thresh": "A missed cancer costs more than an unnecessary follow-up, so the operating point is chosen for high sensitivity rather than at the default 0.5."
+  },
+  "paths": {"models": "models", "results": "results"}
+}

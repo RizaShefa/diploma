@@ -1,0 +1,5 @@
+{
+  "_comment": "ImageNet-pretrained ResNet50. Answers: does transfer learning from natural RGB images help on grayscale ultrasound?",
+  "model": {"name": "resnet50", "architecture": "resnet50", "dropout": 0.5, "freeze_backbone": false, "fine_tune_from": 100},
+  "preprocessing": {"profile": "resnet50_224"}
+}

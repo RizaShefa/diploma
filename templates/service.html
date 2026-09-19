@@ -27,9 +27,25 @@
 <!-- Template Styles (local) -->
 <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 
+<style>
+    /* Styles for the structured prediction report rendered into #prediction-panel */
+    #prediction-panel .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+                              font-size: .88rem; }
+    #prediction-panel table th { font-weight: 600; color: #6c757d; }
+    #prediction-panel .card { text-align: left; }
+    .prototype-banner { background: #fff3cd; border-bottom: 1px solid #ffe69c; color: #664d03;
+                        padding: .6rem 1rem; font-size: .88rem; }
+</style>
+
     </head>
 
     <body>
+
+        <div class="prototype-banner text-center">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>Academic research prototype.</strong>
+            Not a medical device. Not clinically validated. Not for diagnosis or treatment decisions.
+        </div>
 
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -54,6 +70,9 @@
                         <a href="/home" class="nav-item nav-link">Home</a>
                         <a href="/about" class="nav-item nav-link">About</a>
                         <a href="/service" class="nav-item nav-link active">Services</a>
+                        <a href="/dataset" class="nav-item nav-link">Dataset</a>
+                        <a href="/research" class="nav-item nav-link">Results</a>
+                        <a href="/history" class="nav-item nav-link">History</a>
                         <a href="/faq" class="nav-item nav-link">FAQ</a>
                         <a href="/contact" class="nav-item nav-link">Contact Us</a>
                     </div>
@@ -148,20 +167,23 @@
 
     <div class="loader" style="display:none;"></div>
 
-    <h3 id="result">
+    <h3 id="result" style="display:none;">
         <span> </span>
     </h3>
 
-                
+
                 </div>
                 </div>
                 </div>
 
-                <h3 id="result" style="display: none;"></h3>
+<!-- Structured prediction report: classification, confidence, Grad-CAM,
+     model information and limitations. Populated by static/js/main.js from
+     the /api/predict response. -->
+<div id="prediction-panel" class="container mt-4" style="display:none; max-width: 760px;"></div>
 
-<!-- Show Treatment Button -->
-<button id="btn-treatment" class="btn btn-warning mt-3" style="display: none; display: block; margin: 0 auto;">
-  Show Recommended Treatment
+<!-- Show general follow-up information -->
+<button id="btn-treatment" class="btn btn-warning mt-3" style="display: none; margin: 0 auto;">
+  Show general follow-up information
 </button>
 
 

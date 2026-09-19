@@ -1,0 +1,30 @@
+# Virtual environment
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Datasets -- large, and redistribution terms vary. See README > Dataset setup.
+data/
+dataset/
+pred/
+
+# Generated artifacts. Everything here is reproducible from the scripts;
+# committing it risks stale numbers being mistaken for current results.
+models/*.keras
+models/*.h5
+models/*.metadata.json
+models/*.history.json
+results/
+!results/.gitkeep
+
+# Local runtime state
+*.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db
